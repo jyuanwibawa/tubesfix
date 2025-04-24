@@ -37,6 +37,7 @@ class PickupRequestController extends BaseController
         $validated = $request->validate([
             'address' => 'required|string|max:255',
             'description' => 'required|string',
+            'jenis_sampah' => 'nullable|string|max:100',
             'pickup_time' => 'nullable|date|after:now',
         ]);
 
@@ -44,7 +45,8 @@ class PickupRequestController extends BaseController
         $pickupRequest->user_id = auth()->id();
         $pickupRequest->address = $validated['address'];
         $pickupRequest->description = $validated['description'];
-        $pickupRequest->pickup_time = $validated['pickup_time'];
+        $pickupRequest->jenis_sampah = $validated['jenis_sampah'] ?? null;
+        $pickupRequest->pickup_time = $validated['pickup_time'] ?? null;
         $pickupRequest->status = 'pending';
         $pickupRequest->save();
 
@@ -62,4 +64,4 @@ class PickupRequestController extends BaseController
         $pickupRequests = auth()->user()->pickupRequests()->latest()->paginate(10);
         return view('pickups.history', compact('pickupRequests'));
     }
-} 
+}
