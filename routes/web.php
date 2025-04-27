@@ -23,6 +23,7 @@ Route::get('/article/{id}', [ArticleController::class, 'showArticle'])->name('ar
 // 🔐 Hanya untuk user yang sudah login
 Route::middleware('checkRole:admin')->group(function () {
     Route::get('/admin/home', [ArticleController::class, 'index'])->name('admin.home');
+    Route::get('/admin/sampah', [PickupRequestController::class, 'sampah'])->name('admin.sampah');
 
     Route::post('/articles', [ArticleController::class, 'store']);
 
@@ -87,5 +88,4 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/{wasteReport}', [WasteReportController::class, 'update'])->name('waste-reports.update');
         Route::delete('/{wasteReport}', [WasteReportController::class, 'destroy'])->name('waste-reports.destroy');
     });
-
 });

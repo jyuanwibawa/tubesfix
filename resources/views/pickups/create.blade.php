@@ -41,18 +41,10 @@
                         <select class="form-select @error('jenis_sampah') is-invalid @enderror" name="jenis_sampah"
                             id="jenis_sampah">
                             <option value="" disabled selected>Pilih jenis sampah</option>
-                            <option value="Organik" {{ old('jenis_sampah') == 'Organik' ? 'selected' : '' }}>Organik
-                            </option>
-                            <option value="Anorganik" {{ old('jenis_sampah') == 'Anorganik' ? 'selected' : '' }}>
-                                Anorganik</option>
-                            <option value="Elektronik" {{ old('jenis_sampah') == 'Elektronik' ? 'selected' : '' }}>
-                                Elektronik</option>
-                            <option value="Kertas" {{ old('jenis_sampah') == 'Kertas' ? 'selected' : '' }}>Kertas
-                            </option>
-                            <option value="Plastik" {{ old('jenis_sampah') == 'Plastik' ? 'selected' : '' }}>Plastik
-                            </option>
-                            <option value="Lainnya" {{ old('jenis_sampah') == 'Lainnya' ? 'selected' : '' }}>Lainnya
-                            </option>
+                            <option value="TPA" {{ old('jenis_sampah') == 'TPA' ? 'selected' : '' }}>TPA (Tempat
+                                Pembuangan Akhir)</option>
+                            <option value="TPS" {{ old('jenis_sampah') == 'TPS' ? 'selected' : '' }}>TPS (Tempat
+                                Pembuangan Sementara)</option>
                         </select>
                         @error('jenis_sampah')
                         <div class="invalid-feedback">{{ $message }}</div>
