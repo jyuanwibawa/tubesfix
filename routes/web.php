@@ -10,6 +10,10 @@ use App\Http\Controllers\HomeController;
 use App\Models\Article;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminPickupRequestController;
+use App\Http\Controllers\DashboardController;
+
+Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+
 
 
 // Redirect ke /home
