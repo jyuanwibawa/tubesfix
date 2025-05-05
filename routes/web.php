@@ -15,9 +15,6 @@ use App\Http\Controllers\DashboardController;
 
 Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
-Route::get('/collection-points/create', [CollectionPointController::class, 'create'])->name('collection-points.create');
-Route::get('/collection-points/{id}/edit', [CollectionPointController::class, 'edit'])->name('collection-points.edit');
-Route::delete('/collection-points/{id}', [CollectionPointController::class, 'destroy'])->name('collection-points.destroy');
 
 
 // Redirect ke /home
