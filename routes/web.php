@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\MapController;
 use App\Http\Controllers\PickupRequestController;
 use App\Http\Controllers\WasteReportController;
 use App\Http\Controllers\HomeController;
@@ -14,6 +15,9 @@ use App\Http\Controllers\DashboardController;
 
 Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
+Route::get('/collection-points/create', [CollectionPointController::class, 'create'])->name('collection-points.create');
+Route::get('/collection-points/{id}/edit', [CollectionPointController::class, 'edit'])->name('collection-points.edit');
+Route::delete('/collection-points/{id}', [CollectionPointController::class, 'destroy'])->name('collection-points.destroy');
 
 
 // Redirect ke /home
@@ -21,6 +25,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/articles', [ArticleController::class, 'listArticles']);
 Route::get('/article/{id}', [ArticleController::class, 'showArticle'])->name('article.show');
+Route::get('/map', [MapController::class, 'index'])->name('map');
+
+Route::get('/facilities', [MapController::class, 'index'])->name('peta.index');
 
 
 

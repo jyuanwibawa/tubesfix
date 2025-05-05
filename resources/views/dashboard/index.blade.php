@@ -7,7 +7,7 @@
 </div>
 
 <!-- Grid Card -->
-<<div class="px-10 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-6">
+<div class="px-10 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-6">
     @foreach([
     ['label' => 'Jumlah Pengguna', 'value' => $userCount, 'icon' => 'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4
     1.79 4 4 4z'],
@@ -17,6 +17,10 @@
     4 1.79 4 4 4z'],
     ['label' => 'Artikel Published', 'value' => $publishedArticles, 'icon' => 'M5 4v16l7-7 7 7V4H5z'],
     ['label' => 'Artikel Draft', 'value' => $unpublishedArticles, 'icon' => 'M5 4v16l7-7 7 7V4H5z'],
+    ['label' => 'Sampah TPS', 'value' => $jumlahSampahTPS, 'icon' => 'M3 6h18v2H3V6zm2 3h14v13H5V9zm4 2v9h2v-9H9zm4
+    0v9h2v-9h-2z'],
+    ['label' => 'Sampah TPA', 'value' => $jumlahSampahTPA, 'icon' => 'M3 6h18v2H3V6zm2 3h14v13H5V9zm4 2v9h2v-9H9zm4
+    0v9h2v-9h-2z'],
     ['label' => 'Total Pickup Request', 'value' => $totalPickupRequest, 'icon' => 'M12 2L1 21h22L12 2zm0 3.84L19.74
     19H4.26L12 5.84zM11 10v4h2v-4h2zm0 6v2h2v-2h-2z'],
     ['label' => 'Pickup Completed', 'value' => $completedPickup, 'icon' => 'M9 16.17l-3.88-3.88L4 13.41l5 5
@@ -40,138 +44,95 @@
         </svg>
     </div>
     @endforeach
+</div>
+
+{{-- Grafik Status Pickup Request dan Sampah TPS --}}
+<div class="px-10 w-full flex gap-8 mt-6">
+    <div class="w-full md:w-1/2" style="height: 400px;">
+        <canvas id="grafikStatusPickup"></canvas>
     </div>
-
-    <div class="px-10 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-6">
-        <!-- Line Chart Card -->
-        <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl h-[350px]">
-            <h2 class="text-center mb-2 font-semibold">Pickup Request (Line Chart)</h2>
-            <canvas id="grafikStatusPickupLine" style="height: 200px;"></canvas>
-        </div>
-
-        <!-- Pie Chart Card -->
-        <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl h-[350px]">
-            <h2 class="text-center mb-2 font-semibold">Pickup Request (Pie Chart)</h2>
-            <canvas id="grafikStatusPickupPie" style="height: 200px;"></canvas>
-        </div>
-
-        <!-- Bar Chart Card -->
-        <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl h-[350px]">
-            <h2 class="text-center mb-2 font-semibold">Pickup Request (Bar Chart)</h2>
-            <canvas id="grafikStatusPickupBar" style="height: 200px;"></canvas>
-        </div>
+    <div class="w-full md:w-1/2" style="height: 400px;">
+        <canvas id="grafikSampahTPS"></canvas>
     </div>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const months = @json($months);
-            const statusPending = @json($statusPending);
-            const statusAccepted = @json($statusAccepted);
-            const statusRejected = @json($statusRejected);
-            const statusCompleted = @json($statusCompleted);
-
-            // Line Chart
-            const ctxLine = document.getElementById('grafikStatusPickupLine').getContext('2d');
-            new Chart(ctxLine, {
-                type: 'line',
-                data: {
-                    labels: months,
-                    datasets: [{
-                            label: 'Pickup Pending',
-                            data: statusPending,
-                            borderColor: '#FF9F40',
-                            fill: false
-                        },
-                        {
-                            label: 'Pickup Accepted',
-                            data: statusAccepted,
-                            borderColor: '#4BC0C0',
-                            fill: false
-                        },
-                        {
-                            label: 'Pickup Rejected',
-                            data: statusRejected,
-                            borderColor: '#FF6384',
-                            fill: false
-                        },
-                        {
-                            label: 'Pickup Completed',
-                            data: statusCompleted,
-                            borderColor: '#36A2EB',
-                            fill: false
-                        }
-                    ]
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const canvasStatus = document.getElementById('grafikStatusPickup');
+    const ctxStatus = canvasStatus.getContext('2d');
+    const chartStatus = new Chart(ctxStatus, {
+        type: 'line',
+        data: {
+            labels: @json($months),
+            datasets: [{
+                label: 'Pickup Pending',
+                data: @json($statusPending),
+                borderColor: '#FF9F40',
+                fill: false,
+            }, {
+                label: 'Pickup Accepted',
+                data: @json($statusAccepted),
+                borderColor: '#4BC0C0',
+                fill: false,
+            }, {
+                label: 'Pickup Rejected',
+                data: @json($statusRejected),
+                borderColor: '#FF6384',
+                fill: false,
+            }, {
+                label: 'Pickup Completed',
+                data: @json($statusCompleted),
+                borderColor: '#36A2EB',
+                fill: false,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    beginAtZero: true,
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
+                y: {
+                    beginAtZero: true,
                 }
-            });
+            }
+        }
+    });
+});
 
-            // Pie Chart (Total Data)
-            const ctxPie = document.getElementById('grafikStatusPickupPie').getContext('2d');
-            new Chart(ctxPie, {
-                type: 'pie',
-                data: {
-                    labels: ['Pending', 'Accepted', 'Rejected', 'Completed'],
-                    datasets: [{
-                        data: [
-                            statusPending.reduce((a, b) => a + b, 0),
-                            statusAccepted.reduce((a, b) => a + b, 0),
-                            statusRejected.reduce((a, b) => a + b, 0),
-                            statusCompleted.reduce((a, b) => a + b, 0)
-                        ],
-                        backgroundColor: ['#FF9F40', '#4BC0C0', '#FF6384', '#36A2EB']
-                    }]
+document.addEventListener('DOMContentLoaded', function() {
+    const canvasSampah = document.getElementById('grafikSampahTPS');
+    const ctxSampah = canvasSampah.getContext('2d');
+    const chartSampah = new Chart(ctxSampah, {
+        type: 'line',
+        data: {
+            labels: @json($months),
+            datasets: [{
+                label: 'Sampah TPS',
+                data: @json($dataTPS),
+                borderColor: '#4BC0C0',
+                fill: false,
+            }, {
+                label: 'Sampah TPA',
+                data: @json($dataTPA),
+                borderColor: '#36A2EB',
+                fill: false,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    beginAtZero: true,
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
+                y: {
+                    beginAtZero: true,
                 }
-            });
-
-            // Bar Chart
-            const ctxBar = document.getElementById('grafikStatusPickupBar').getContext('2d');
-            new Chart(ctxBar, {
-                type: 'bar',
-                data: {
-                    labels: months,
-                    datasets: [{
-                            label: 'Pickup Pending',
-                            data: statusPending,
-                            backgroundColor: '#FF9F40'
-                        },
-                        {
-                            label: 'Pickup Accepted',
-                            data: statusAccepted,
-                            backgroundColor: '#4BC0C0'
-                        },
-                        {
-                            label: 'Pickup Rejected',
-                            data: statusRejected,
-                            backgroundColor: '#FF6384'
-                        },
-                        {
-                            label: 'Pickup Completed',
-                            data: statusCompleted,
-                            backgroundColor: '#36A2EB'
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            stacked: true
-                        },
-                        y: {
-                            stacked: true,
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        });
-    </script>
-    @endsection
+            }
+        }
+    });
+});
+</script>
+@endsection
